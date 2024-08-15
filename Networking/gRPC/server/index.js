@@ -4,12 +4,15 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    arrays: true
+    keepCase: true,         // allow casing in protobuf
+    longs: String,          // allow long string in protobuf
+    enums: String,          // allow enum string in protobuf
+    arrays: true            // allow arrays in protobuf
 });
 
+/* loads the package that we are getting from protoLoader in gRPC so that gRPC knows what
+   Customer and other definitions will look like
+ */
 const customersProto = grpc.loadPackageDefinition(packageDefinition);
 
 const server = new grpc.Server();
@@ -26,8 +29,13 @@ const customers = [{
     address: 'Uttrakhand'
 }];
 
+// adds a customer service and define all procedures
 server.addService(customersProto.CustomerService.service, {
+    // here call === this in JS, any request that come, headers, query param will come inside it
+    // on success or error what needs to be done is defined in callback and used to send data to client
     getAll: (call, callback) => {
+        // to return data of customers we have to return an object with customers list .proto we have defined it like this
+        // plz note we have to map our array with customers field otherwise and empty array will return to client
         callback(null, { customers });
     },
     get: (call, callback) => {
@@ -81,6 +89,7 @@ server.addService(customersProto.CustomerService.service, {
     }
 })
 
+// for auth in gRPC, here we are allowing unauthenticated calls
 server.bindAsync("127.0.0.1:30043", grpc.ServerCredentials.createInsecure(), (err, port) => {
     if (err) {
       console.error(`Error starting gRPC server: ${err}`);

@@ -7,7 +7,9 @@ const CACHE_FILES = [
   "./script.js",
 ];
 
+// this event will get triggered on installation of SW
 self.addEventListener("install", (e) => {
+  // bcz of waitUntil installation event will wait for this code to get completed before it finishes
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(CACHE_FILES);
@@ -15,13 +17,15 @@ self.addEventListener("install", (e) => {
   );
 });
 
+// this event will get triggered when SW gets activated
 self.addEventListener("activate", (e) => {
-  // Clean up useless cache
+  // Clean up useless cache (older versions etc)
   e.waitUntil(
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
           if (key != CACHE_NAME) {
+            // delete returns a promise and promise.all will wait for all promises to resolve
             return caches.delete(key);
           }
         })
@@ -30,7 +34,11 @@ self.addEventListener("activate", (e) => {
   );
 });
 
+// this event will get triggered when browser makes a fetch request
 self.addEventListener("fetch", (e) => {
+  // checking the cache first and returning from it is a bad idea bcz in that case network calls will never happen and always stale data will be returned
+  // so we first make a call and if that fails return it from cache
+
   // Offline exprience
   // Whenever a file is requested,
   // 1. fetch from network, update my cache 2. cache as a fallback

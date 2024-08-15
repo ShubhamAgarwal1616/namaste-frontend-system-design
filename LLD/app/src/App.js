@@ -40,16 +40,24 @@ function App() {
 
       <BrowserRouter>
         <Routes>
+          {/*go to this route for shimmer UI and infinite scroll*/}
           <Route path="/" element={<Body />}></Route>
+          {/*go to this route for protected route*/}
           <Route element={<ProtectedRoute />}>
             <Route path="/team" element={<Team />}></Route>
           </Route>
+          {/*go to this route for multi language support*/}
           <Route path="/about" element={<About lang={lang} />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          {/*go to this route for accordion*/}
           <Route path="/accordion" element={<Accordion />}></Route>
+          {/*go to this route for nested comments*/}
           <Route path="/comments" element={<Comments />}></Route>
+          {/*go to this route for image slider, make it responsive with better CSS*/}
           <Route path="/image-slider" element={<ImageSlider />}></Route>
+          {/*go to this route for pagination*/}
           <Route path="/pagination" element={<Pagination />}></Route>
+          {/*go to this route for live chat, look for the issues explained inside*/}
           <Route path="/live-chat" element={<LiveChat />}></Route>
           <Route path="/search-ui" element={<SearchUi />}></Route>
         </Routes>

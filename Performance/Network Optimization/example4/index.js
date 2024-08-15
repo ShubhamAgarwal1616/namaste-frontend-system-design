@@ -13,6 +13,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+// Use this to run it on protocol http/1.1, spdy server will run it on https and protocol http2
+// app.listen(PORT, () => {
+//   console.log(`Server started at http://localhost:${PORT}`)
+// })
+
 const CERT_DIR = `${__dirname}/cert`;
 
 const server = spdy.createServer(

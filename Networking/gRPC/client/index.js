@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (req, res) =>{
     client.getAll(null, (err, data) => {
         if (!err) {
+            // data will be returned in customers field as in .proto we have defined it like this for customer list
             res.send(data.customers);
         }
     })

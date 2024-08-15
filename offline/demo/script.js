@@ -3,6 +3,7 @@ if (navigator.serviceWorker) {
   // Register the service worker
 
   navigator.serviceWorker
+    // by default the scope of SW is global, so we can also define a folder in scope and it will only listen to events in that folder
     .register("./sw.js", {
       scope: "./",
     })
